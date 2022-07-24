@@ -1,0 +1,27 @@
+[project]
+name = "parse2excel"
+version = "2022.07.24"
+description = "Parsing text files with TextFSM and export to sqlite3/Excel with configuration file"
+readme = "README.md"
+license = { file="LICENSE" }
+authors = [
+  {name="Umur Arslan"},
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+requires-python = ">=3.9"
+dependencies = [
+    "textfsm >= 1.1.0",
+    "openpyxl >= 3.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/umurarslan/parse2excel"
+
+[project.scripts]
+parse2excel = "parse2excel.parse2excel:main"
