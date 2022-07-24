@@ -1,7 +1,7 @@
 [project]
 name = "parse2excel"
 version = "2022.07.24"
-description = "Parsing text files with TextFSM and export to sqlite3/Excel with configuration file"
+description = "Parsing text files with TextFSM and export to SQLite/Excel with configuration file"
 readme = "README.md"
 license = { file="LICENSE" }
 authors = [
