@@ -1,7 +1,7 @@
 """
 Parsing text files with TextFSM and export to SQLite/Excel with configuration file
 
-Version: 2022.07.24
+Version: 2022.07.25
 """
 
 import argparse
