@@ -159,7 +159,7 @@ Example config.yaml file:
 ```
 
 ### Output Excel File Example
-As below example 3 tables are created (ports, vlans, ports_detail) in seperate sheets. In "vlans" sheet, "Filename - Hostname - Vlan Number - Vlan Description" are headers with multiple devices data. 
+As below example three tables are created with "textfsm type" (ports, vlans, ports_detail) in seperate sheets. In "vlans" sheet, "Filename - Hostname - Vlan Number - Vlan Description" are headers with multiple devices data. 
 
 ![Output Excel File Example](https://raw.githubusercontent.com/umurarslan/parse2excel/main/img/img1.PNG)
 
