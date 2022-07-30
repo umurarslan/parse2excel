@@ -51,7 +51,7 @@ options:
 
 ### Simple Usage
 
-Run **parse2excel** command with **Config File Path OR without argument "config.yaml" file used (single config file) OR "P2E_CONFIGS" Folder used (multiple config files in folder)** from any path after that check excel/SQLite output files in working directory.
+Run **parse2excel** command with **Config File Path** OR **without argument "config.yaml" file** used (single config file) OR **without argument "P2E_CONFIGS" Folder** used (multiple config files in folder) from any path after that check excel/SQLite output files in working directory.
 
 ```
 parse2excel <Config_File_Path>
@@ -62,10 +62,10 @@ parse2excel <Config_File_Path>
 
 ### Config file
 
-There are 4 different options in YAML config file:
+There are four **type** options in YAML config file:
 
 - **textfsm:** Parse text files in folder with TextFSM template and export excel/SQLite.
-- **sqljoin:** Run "SELECT" SQLite command and export excel/SQLite. (Python function supported)
+- **sqljoin:** Run "SELECT" SQLite command and export excel/SQLite. (Python function supported) (Any SQLite command run with "sqlcommand_run")
 - **sqlfunction:** Create SQLite Python functions for all **sqljoin** parts.
 - **excel:** Import Excel file and convert to SQLite.
 
@@ -74,12 +74,17 @@ There are 4 different options in YAML config file:
 Example config.yaml file:
 
 ```yaml
+
+##
+# Simple textfsm type, parse device config files in folders 
+# and create sqlite table & excel sheet (if NOT include "excel_export: none") 
+##
 - type: textfsm
   db_name: my_p2e_excel
   table_name: my_interface_sheet
   # excel_export: none
   folders:
-    - config_FOLDER
+    - device_config_FOLDER
   template: |
     Value Required Interface (\S+)
     Value Interface_Description (\S+)
@@ -94,6 +99,10 @@ Example config.yaml file:
       ^ ipv4 address ${Interface_Ip} ${Interface_Mask}
       ^! -> Record Start
 
+##
+# Simple sqljoin type, create table with select command and OPTIONAL function.
+# Create also excel sheet (if NOT include "excel_export: none")
+##
 - type: sqljoin
   db_name: my_p2e_excel
   new_table: SecGW_CERT
@@ -103,34 +112,56 @@ Example config.yaml file:
       def removetxt(d):
         return d.replace('.txt','')
 
+##
+# add python function for all sqljoin parts 
+# after that no need to add function for sqljoin explicitly.
+##
 - type: sqlfunction
   functions:
     - |
-      def removetxt(d):
-          # add function to all sqljoin parts
+      def removetxt(d):                             
           return d.replace('.txt','')
 
+##
+# create "ports_with_vlan_desc" custom table with "SQLite Select" commands
+# With "LEFT JOIN" add "vlan description" to ports table on match "Vlan Number"
+##
 - type: sqljoin
   db_name: my_p2e_excel
-  # only run any sqlite command for debug, delete table etc.
+  new_table: ports_with_vlan_desc
+  sqlcommand: |
+    SELECT 
+      ports.*, 
+      vlans.Vlan_Desc_Name 
+    FROM 
+      ports 
+      LEFT JOIN vlans ON (
+        ports.Hostname = vlans.Hostname 
+        AND ports.Interface_Vlan = vlans.Vlan_Number
+      )
+
+##
+# only run any sqlite command for debug, delete table etc.
+## 
+- type: sqljoin
+  db_name: my_p2e_excel
   sqlcommand_run: select Service_ID from vprn_w_x
 
-- type: sqljoin
-  db_name: cer
-  new_table: cer_int_with_policy
-  first_table: cer_interface
-  second_table: cer_vrf_policy
-  match: Vrf
-  # match: cer_interface.vrf1 = cer_vrf_policy.vrf2
-
+##
+# import excel file to sqlite db-table
+## 
 - type: excel
   db_name: from_excel
   excel_file: excel_file.xlsx
-  # default ALL OR OPTIONAL excel_sheets
-  excel_sheets:
-    - Sheet1
+  # OPTIONAL excel_sheets
+  # excel_sheets:
+  #   - Sheet1
 ```
+
+### Output Excel File Example
+As below example 3 tables are created (ports, vlans, ports_detail) in seperate sheets. In "vlans" sheet, "Filename - Hostname - Vlan Number - Vlan Description" are headers with multiple devices data. 
+
+![Output Excel File Example](https://raw.githubusercontent.com/umurarslan/parse2excel/main/img/img1.PNG)
 
 ---
 
-**_TBA_**
