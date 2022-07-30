@@ -119,8 +119,8 @@ Example config.yaml file:
 - type: sqlfunction
   functions:
     - |
-      def removetxt(d):                             
-          return d.replace('.txt','')
+      def removetxt(d):
+        return d.replace('.txt','')
 
 ##
 # create "ports_with_vlan_desc" custom table with "SQLite Select" commands
@@ -153,7 +153,7 @@ Example config.yaml file:
 - type: excel
   db_name: from_excel
   excel_file: excel_file.xlsx
-  # OPTIONAL excel_sheets
+  # OPTIONAL, specify excel sheets
   # excel_sheets:
   #   - Sheet1
 ```
