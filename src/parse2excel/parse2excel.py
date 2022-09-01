@@ -1,7 +1,7 @@
 """
 Parsing text files with TextFSM and export to SQLite/Excel with configuration file
 
-Version: 2022.07.25
+Version: 2022.09.01
 """
 
 import argparse
@@ -129,7 +129,7 @@ class Parsev:
     @staticmethod
     def yaml_file_to_list(yaml_file) -> list:
         """ convert yaml file to list"""
-        with open(yaml_file, encoding='utf-8') as file:
+        with open(yaml_file, encoding='utf-8', errors='ignore') as file:
             yaml_text = file.read()
         try:
             all_parts = list(yaml.full_load_all(yaml_text))[0]
@@ -182,7 +182,7 @@ class Textfsmv:
             # for single hosts, yaml:files
             if 'files' in part:
                 for host_file in part['files']:
-                    with open(host_file, encoding='utf-8') as file:
+                    with open(host_file, encoding='utf-8', errors='ignore') as file:
                         host_file_text = file.read()
                     # textfsm_result to sqlite
                     single_textfsm_result = Textfsmv._textfsm_result_with_host(
@@ -209,7 +209,7 @@ class Textfsmv:
                 for folder in part['folders']:
                     all_host_file = os.listdir(folder + "/")
                     for host_file in all_host_file:
-                        with open(folder + '/' + host_file, encoding='utf-8') as file:
+                        with open(folder + '/' + host_file, encoding='utf-8', errors='ignore') as file:
                             host_file_text = file.read()
                             # textfsm_result to sqlite
                             single_textfsm_result = Textfsmv._textfsm_result_with_host(
