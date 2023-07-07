@@ -14,20 +14,8 @@ Simple CLI tool parsing text files with TextFSM and export to SQLite and Excel w
 
 ## Installation
 
-**Option 1:**
-
-From Python Package Index (PyPI) Repo:
-
 ```
 pip install parse2excel
-```
-
-**Option 2:**
-
-Download project ZIP file and run below command:
-
-```
-pip install parse2excel-X.zip
 ```
 
 ### Installation Check
